@@ -1,4 +1,5 @@
 module.exports = {
-  ...require("./searchScreen"),
   ...require("./homeScreen"),
+  ...require("./searchScreen"),
+  ...require("./discoverScreen"),
 };

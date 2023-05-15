@@ -3,7 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
-const { HomeScreen, SearchScreen } = require("./routes");
+const { HomeScreen, SearchScreen, DiscoverScreen } = require("./routes");
 
 const app = express();
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use("/", limiter);
 app.use("/home-screen", HomeScreen);
 app.use("/search", SearchScreen);
 // app.use("/recommendations", Recommendaitions);
-//app.use("/upcoming", UpcomingScreen);
+app.use("/discover", DiscoverScreen);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
