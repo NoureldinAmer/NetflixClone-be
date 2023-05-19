@@ -7,6 +7,7 @@ router.get("/", async (req, res) => {
   const newEpisodes = await getNewEpisodes();
   return res.status(200).json({
     status: "success",
+    endpoint: "discover",
     results: { upcoming_movies: upcomingMovies, new_episodes: newEpisodes },
   });
 });
@@ -14,7 +15,7 @@ router.get("/", async (req, res) => {
 async function getUpComing() {
   try {
     let response = await axios.get(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.THEMOVIEDB_API_KEY}`
+      `${process.env.TMDB_BASE_URL}/movie/upcoming?api_key=${process.env.TMDB_API_KEY}`
     );
 
     let results = response.data.results;
@@ -42,7 +43,7 @@ async function getUpComing() {
 async function getNewEpisodes() {
   try {
     let response = await axios.get(
-      `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.THEMOVIEDB_API_KEY}&air_date.gte=2023-05-01&vote_count.gte=3000&air_date.lte=2023-05-14`
+      `${process.env.TMDB_BASE_URL}/discover/tv?api_key=${process.env.TMDB_API_KEY}&air_date.gte=2023-05-01&vote_count.gte=3000&air_date.lte=2023-05-14`
     );
 
     let results = response.data.results;

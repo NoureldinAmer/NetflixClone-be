@@ -2,10 +2,14 @@ const { Router } = require("express");
 const axios = require("axios");
 const router = Router();
 
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
 router.get("/top-searches", async (req, res) => {
+  await delay(1000);
   const results = await getTopSearches();
   return res.status(200).json({
     status: "success",
+    endpoint: "topSearches",
     description: "top searches of the day",
     results: results,
   });
@@ -18,7 +22,7 @@ router.get("/top-results", async (req, res) => {
 async function getTopSearches() {
   try {
     let response = await axios.get(
-      `https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.THEMOVIEDB_API_KEY}`
+      `${process.env.TMDB_BASE_URL}/trending/all/week?api_key=${process.env.TMDB_API_KEY}`
     );
 
     let results = response.data.results;
