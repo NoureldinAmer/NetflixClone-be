@@ -22,7 +22,7 @@ async function getPopularMovies() {
       `${process.env.TMDB_BASE_URL}/movie/popular?api_key=${process.env.TMDB_API_KEY}`
     );
     const data = response.data.results.map((result) => {
-      return { ...result, content_type: "movie" };
+      return { ...result, media_type: "movie" };
     });
     return {
       list_name: "Popular Movies",
@@ -40,7 +40,7 @@ async function getTopRatedMovies(startDate, endDate) {
       `${process.env.TMDB_BASE_URL}/discover/movie?api_key=${process.env.TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=600&primary_release_date.gte=${startDate}-01-01&primary_release_date.lte=${endDate}-12-31&region=US`
     );
     const data = response.data.results.map((result) => {
-      return { ...result, content_type: "movie" };
+      return { ...result, media_type: "movie" };
     });
     return {
       list_name: `Top Rated Movies between ${startDate} and ${endDate}`,
@@ -59,7 +59,7 @@ async function getPopularShows() {
     );
 
     const data = response.data.results.map((result) => {
-      return { ...result, content_type: "tv" };
+      return { ...result, media_type: "tv" };
     });
     return {
       list_name: "Popular Shows",
