@@ -32,8 +32,10 @@ app.use("/search", SearchScreen);
 app.use("/discover", DiscoverScreen);
 app.use("/details", MediaDetails);
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}`);
   fetchGenres();
 });
 
