@@ -25,7 +25,7 @@ const limiter = rateLimit({
 });
 
 app.use("/", limiter);
-app.disable("etag");
+//app.disable("etag");
 
 app.use("/home-screen", HomeScreen);
 app.use("/search", SearchScreen);
