@@ -62,12 +62,79 @@ async function getMovieDetails(id) {
   console.log(certification);
 
   return {
-    movieDetails: movieDetails.data,
+    mediaDetails: movieDetails.data,
     certification,
     recommendations: recommendations.data.results.slice(0, 9),
   };
 }
 
-function getTVDetails(id) {}
+async function getTVDetails(id) {
+  const MediaDetailsEndpoints = [
+    `${process.env.TMDB_BASE_URL}/tv/${id}?api_key=${process.env.TMDB_API_KEY}`,
+    `${process.env.TMDB_BASE_URL}/tv/${id}/content_ratings?api_key=${process.env.TMDB_API_KEY}`,
+    `${process.env.TMDB_BASE_URL}/tv/${id}/recommendations?api_key=${process.env.TMDB_API_KEY}`,
+  ];
+
+  const results = await Promise.all(MediaDetailsEndpoints.map(fetchData));
+
+  //destrcuturing is based on the promise order
+  let [tvDetails, releaseDates, recommendations] = results;
+  tvDetails.data.runtime = convertRuntime(tvDetails.data.runtime);
+  tvDetails.data.title = tvDetails.data.name;
+  tvDetails.data.first_air_date = tvDetails.data.first_air_date.split("-")[0];
+
+  //extract movie certification
+  let certification = releaseDates.data.results.filter(
+    (result) => result.iso_3166_1 === "US"
+  );
+  certification = certification[0]?.rating;
+
+  const promises = [];
+  for (let season = 1; season <= tvDetails.data.number_of_seasons; season++) {
+    promises.push(
+      axios.get(
+        `${process.env.TMDB_BASE_URL}/tv/${id}/season/${season}?api_key=${process.env.TMDB_API_KEY}`
+      )
+    );
+  }
+
+  // Wait for all promises to resolve
+  const responses = await Promise.all(promises);
+  let today = new Date();
+
+  // Map each response to its 'episodes' array and keep only certain properties
+  let seasons = responses.map((response) => {
+    let releaseDate = new Date(response.data.air_date);
+    let season = {
+      air_date: response.data.air_date,
+      name: response.data.name,
+      id: response.data.id,
+      episodes: [],
+      released: releaseDate > today ? false : true,
+    };
+    response.data.episodes.map((episode) =>
+      season.episodes.push({
+        name: episode.name,
+        overview: episode.overview,
+        runtime: episode.runtime,
+        season_number: episode.season_number,
+        episode_number: episode.episode_number,
+        still_path: episode.still_path,
+        air_date: episode.air_date,
+      })
+    );
+
+    return season;
+  });
+
+  return {
+    mediaDetails: tvDetails.data,
+    certification,
+    recommendations: recommendations.data.results.slice(0, 9),
+    seasons,
+  };
+
+  console.log(results);
+}
 
 module.exports = { MediaDetails: router };
