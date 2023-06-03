@@ -55,7 +55,7 @@ async function getTopRatedMovies(startDate, endDate) {
 async function getPopularShows() {
   try {
     const response = await axios.get(
-      `${process.env.TMDB_BASE_URL}/tv/popular?api_key=${process.env.TMDB_API_KEY}`
+      `${process.env.TMDB_BASE_URL}/trending/tv/day?api_key=${process.env.TMDB_API_KEY}`
     );
 
     const data = response.data.results.map((result) => {
