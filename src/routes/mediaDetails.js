@@ -48,6 +48,7 @@ async function getMovieDetails(id) {
 
   //destrcuturing is based on the promise order
   let [movieDetails, releaseDates, recommendations] = results;
+  movieDetails.data.duration = movieDetails.data.runtime;
   movieDetails.data.runtime = convertRuntime(movieDetails.data.runtime);
   movieDetails.data.year = movieDetails.data.release_date.split("-")[0];
 
@@ -79,7 +80,6 @@ async function getTVDetails(id) {
 
   //destrcuturing is based on the promise order
   let [tvDetails, releaseDates, recommendations] = results;
-  tvDetails.data.runtime = convertRuntime(tvDetails.data.runtime);
   tvDetails.data.title = tvDetails.data.name;
   tvDetails.data.first_air_date = tvDetails.data.first_air_date.split("-")[0];
 
@@ -87,9 +87,11 @@ async function getTVDetails(id) {
   let certification = releaseDates.data.results.filter(
     (result) => result.iso_3166_1 === "US"
   );
-  certification = certification[0]?.rating;
+  certification = certification[0] ? certification[0].rating : "NA";
 
   const promises = [];
+
+  // TODO => some shows start with season 0
   for (let season = 1; season <= tvDetails.data.number_of_seasons; season++) {
     promises.push(
       axios.get(
@@ -100,11 +102,11 @@ async function getTVDetails(id) {
 
   // Wait for all promises to resolve
   const responses = await Promise.all(promises);
-  let today = new Date();
+  const today = new Date();
 
   // Map each response to its 'episodes' array and keep only certain properties
   let seasons = responses.map((response) => {
-    let releaseDate = new Date(response.data.air_date);
+    const releaseDate = new Date(response.data.air_date);
     let season = {
       air_date: response.data.air_date,
       name: response.data.name,
@@ -133,8 +135,6 @@ async function getTVDetails(id) {
     recommendations: recommendations.data.results.slice(0, 9),
     seasons,
   };
-
-  console.log(results);
 }
 
 module.exports = { MediaDetails: router };
