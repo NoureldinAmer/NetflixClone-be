@@ -56,7 +56,7 @@ async function getMovieDetails(id) {
   let certification = releaseDates.data.results.filter(
     (result) => result.iso_3166_1 === "US"
   );
-  certification = certification[0].release_dates[0].certification
+  certification = certification[0]?.release_dates[0]?.certification
     ? certification[0].release_dates[0].certification
     : "NA";
   console.log(certification);
@@ -82,7 +82,7 @@ async function getTVDetails(id) {
   tvDetails.data.title = tvDetails.data.name;
   tvDetails.data.first_air_date = tvDetails.data.first_air_date.split("-")[0];
 
-  //extract movie certification
+  //extract tv certification
   let certification = releaseDates.data.results.filter(
     (result) => result.iso_3166_1 === "US"
   );
