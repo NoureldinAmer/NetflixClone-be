@@ -109,11 +109,13 @@ async function getSearchQuery(query) {
       content: pair[1],
     }));
 
-    results.unshift({
-      genre_id: -1,
-      genre_name: "Top Searches",
-      content: topResults,
-    });
+    if (topResults.length) {
+      results.unshift({
+        genre_id: -1,
+        genre_name: "Top Searches",
+        content: topResults,
+      });
+    }
 
     return results;
   } catch (error) {
