@@ -4,11 +4,18 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   //await delay(10000); // Wait 10 seconds, for testing purposes
-  const results = [
-    await getPopularMovies(),
-    await getPopularShows(),
-    await getTopRatedMovies(2017, 2023),
-  ];
+  let results = [await getPopularMovies(), await getPopularShows()];
+
+  let startYear = currentYear - (currentYear % 5);
+  let endYear = startYear + 5;
+
+  while (startYear >= 1975) {
+    const movies = await getTopRatedMovies(startYear, endYear);
+    results.push(movies);
+    endYear = startYear - 1;
+    startYear -= 5;
+  }
+
   return res.status(200).json({
     status: "success",
     endpoint: "homeScreen",
@@ -43,7 +50,7 @@ async function getTopRatedMovies(startDate, endDate) {
       return { ...result, media_type: "movie" };
     });
     return {
-      list_name: `Top Rated Movies between ${startDate} and ${endDate}`,
+      list_name: `Top Rated Movies (${startDate} - ${endDate})`,
       results: data.slice(0, 40),
     };
   } catch (error) {
