@@ -7,8 +7,9 @@ router.get("/", async (req, res) => {
   let results = [await getPopularMovies(), await getPopularShows()];
 
   const currentYear = new Date().getFullYear();
-  let startYear = currentYear - (currentYear % 5);
-  let endYear = startYear + 5;
+
+  let endYear = currentYear;
+  let startYear = currentYear - 5;
 
   while (startYear >= 1975) {
     const movies = await getTopRatedMovies(startYear, endYear);
