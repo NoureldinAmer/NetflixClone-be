@@ -6,6 +6,7 @@ router.get("/", async (req, res) => {
   //await delay(10000); // Wait 10 seconds, for testing purposes
   let results = [await getPopularMovies(), await getPopularShows()];
 
+  const currentYear = new Date().getFullYear();
   let startYear = currentYear - (currentYear % 5);
   let endYear = startYear + 5;
 
