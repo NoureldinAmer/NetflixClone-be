@@ -66,7 +66,7 @@ async function getTopRatedMovies(startDate, endDate) {
 async function getTopRatedShows(startDate, endDate) {
   try {
     const response = await axios.get(
-      `${process.env.TMDB_BASE_URL}/discover/tv?api_key=${process.env.TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=600&first_air_date_year.gte=${startDate}-01-01&first_air_date_year.lte=${endDate}-12-31&region=US`
+      `${process.env.TMDB_BASE_URL}/discover/tv?api_key=${process.env.TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=600&first_air_date.gte=${startDate}-01-01&first_air_date.lte=${endDate}-12-31&region=US`
     );
     const data = response.data.results.map((result) => {
       return { ...result, media_type: "tv" };
