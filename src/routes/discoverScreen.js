@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
 
 async function getUpComing() {
   try {
-    console.log("getting results");
     let response = await axios.get(
       `${process.env.TMDB_BASE_URL}/movie/upcoming?api_key=${process.env.TMDB_API_KEY}`
     );
@@ -28,13 +27,13 @@ async function getUpComing() {
       return releaseDate > today; // filters out dates less than today
     });
 
+    console.log(results.length);
+
     results = results.sort((a, b) => {
       let dateA = new Date(a.release_date);
       let dateB = new Date(b.release_date);
       return dateA - dateB; // for descending order. Use dateA - dateB for ascending order
     });
-
-    console.log("results", results);
 
     return results;
   } catch (error) {
