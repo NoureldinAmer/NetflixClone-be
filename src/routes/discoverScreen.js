@@ -33,7 +33,7 @@ async function getUpComing() {
       return dateA - dateB; // for descending order. Use dateA - dateB for ascending order
     });
 
-    console.log(results.release_date);
+    console.log("results", results.release_date);
 
     return results;
   } catch (error) {
