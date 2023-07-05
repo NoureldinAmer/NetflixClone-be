@@ -24,7 +24,7 @@ async function getUpComing() {
 
     results = results.filter((result) => {
       let releaseDate = new Date(result.release_date);
-      return releaseDate >= today; // filters out dates less than today
+      return releaseDate > today; // filters out dates less than today
     });
 
     results = results.sort((a, b) => {
@@ -32,6 +32,8 @@ async function getUpComing() {
       let dateB = new Date(b.release_date);
       return dateA - dateB; // for descending order. Use dateA - dateB for ascending order
     });
+
+    console.log(results.release_date);
 
     return results;
   } catch (error) {
