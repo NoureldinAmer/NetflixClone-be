@@ -22,6 +22,8 @@ async function getUpComing() {
     let today = new Date();
     today.setHours(0, 0, 0, 0); // set time to 00:00:00
 
+    console.log(results.length);
+
     results = results.filter((result) => {
       let releaseDate = new Date(result.release_date);
       return releaseDate > today; // filters out dates less than today
