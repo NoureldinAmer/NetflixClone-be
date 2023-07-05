@@ -20,14 +20,16 @@ async function getUpComing() {
 
     let results = response.data.results;
     let today = new Date();
+    let thirtyDaysAgo = new Date().setDate(today.getDate() - 30);
+
     today.setHours(0, 0, 0, 0); // set time to 00:00:00
 
     console.log(results.length);
 
-    // results = results.filter((result) => {
-    //   let releaseDate = new Date(result.release_date);
-    //   return releaseDate > today; // filters out dates less than today
-    // });
+    results = results.filter((result) => {
+      let releaseDate = new Date(result.release_date);
+      return releaseDate > thirtyDaysAgo; // filters out dates less than 30 days ago
+    });
 
     console.log(results.length);
 
