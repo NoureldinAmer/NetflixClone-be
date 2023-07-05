@@ -8,30 +8,30 @@ router.get("/", async (req, res) => {
   return res.status(200).json({
     status: "success",
     endpoint: "discover",
-    results: { upcoming_movies: upcomingMovies, new_episodes: newEpisodes },
+    //results: { upcoming_movies: upcomingMovies, new_episodes: newEpisodes },
   });
 });
 
 async function getUpComing() {
   try {
-    let response = await axios.get(
-      `${process.env.TMDB_BASE_URL}/movie/upcoming?api_key=${process.env.TMDB_API_KEY}`
-    );
+    // let response = await axios.get(
+    //   `${process.env.TMDB_BASE_URL}/movie/upcoming?api_key=${process.env.TMDB_API_KEY}`
+    // );
 
-    let results = response.data.results;
-    let today = new Date();
-    today.setHours(0, 0, 0, 0); // set time to 00:00:00
+    // let results = response.data.results;
+    // let today = new Date();
+    // today.setHours(0, 0, 0, 0); // set time to 00:00:00
 
-    results = results.filter((result) => {
-      let releaseDate = new Date(result.release_date);
-      return releaseDate > today; // filters out dates less than today
-    });
+    // results = results.filter((result) => {
+    //   let releaseDate = new Date(result.release_date);
+    //   return releaseDate > today; // filters out dates less than today
+    // });
 
-    results = results.sort((a, b) => {
-      let dateA = new Date(a.release_date);
-      let dateB = new Date(b.release_date);
-      return dateA - dateB; // for descending order. Use dateA - dateB for ascending order
-    });
+    // results = results.sort((a, b) => {
+    //   let dateA = new Date(a.release_date);
+    //   let dateB = new Date(b.release_date);
+    //   return dateA - dateB; // for descending order. Use dateA - dateB for ascending order
+    // });
 
     console.log("results", results.release_date);
 
