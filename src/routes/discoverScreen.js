@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   return res.status(200).json({
     status: "success",
     endpoint: "discover",
-    //results: { upcoming_movies: upcomingMovies, new_episodes: newEpisodes },
+    results: { upcoming_movies: upcomingMovies, new_episodes: newEpisodes },
   });
 });
 
@@ -34,7 +34,7 @@ async function getUpComing() {
       return dateA - dateB; // for descending order. Use dateA - dateB for ascending order
     });
 
-    console.log("results", results.release_date);
+    console.log("results", results);
 
     return results;
   } catch (error) {
