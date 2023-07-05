@@ -24,10 +24,10 @@ async function getUpComing() {
 
     console.log(results.length);
 
-    results = results.filter((result) => {
-      let releaseDate = new Date(result.release_date);
-      return releaseDate > today; // filters out dates less than today
-    });
+    // results = results.filter((result) => {
+    //   let releaseDate = new Date(result.release_date);
+    //   return releaseDate > today; // filters out dates less than today
+    // });
 
     console.log(results.length);
 
